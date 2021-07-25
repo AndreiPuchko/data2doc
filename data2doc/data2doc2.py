@@ -506,11 +506,14 @@ class data2doc():
 							]
 				}
 
+
+
 if __name__ == '__main__':
-	print(chr(27) + "[2J")
+
+	testResultFolder=f"{os.path.dirname(__file__)}/../test-result/"
+	testSourceFolder=f"{os.path.dirname(__file__)}/../test-data/test*"
+	
 	d2d=data2doc()
-	testResultFolder="../test-result/"
-	testSourceFolder="../test-data/test*"
 
 	for testFolderName in glob.glob(testSourceFolder):
 		print (testFolderName," ==>> ", end = '')
