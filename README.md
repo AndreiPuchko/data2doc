@@ -1,4 +1,9 @@
 `data2doc`
+A simple reporting tool to combine data (saved in .XLSX format) with a template (which is .DOCX) 
 
-Simply reporting tool for combine data (saved in .XLSX) file with template (which is .DOCX)
-Demo page [data2doc.net](https://data2doc.net/)
+Demo page: [data2doc.net](https://data2doc.net/)
+
+# Usage
+```python
+from data2doc import merge
+```
