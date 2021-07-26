@@ -85,23 +85,26 @@ def excelDataFormat(cellText, formatStr):
 def merge(file1,file2,outputFile):
 	d2d=data2doc()
 	for x in [file1,file2]:
-		r=d2d.loadFile(x)
-		if not r:
+		if not d2d.loadFile(x):
 			print (f"Input file not found: {x}")
 			return False
 	if d2d.data2doc():
 		outputFile=d2d.checkOutputFileName(outputFile)
 		if d2d.saveFile(outputFile):
 			print (f"Processing finished. See result in {outputFile}")
+			return True
 		else:
 			print (f"Can't create output file: {outputFile}")
 	else:
-		print (f"Processing error")
+		print (f"Processing error: {d2d.error}")
+	return False
 
 
 class data2doc():
 
 	def __init__(self,dataDic={},docxTemplateBinary="",xlsxBinary="",jsonBinary=""):
+		
+		self.error=""
 		self.xlsxBinary=None
 		self.jsonBinary=None
 		self.docxTemplateBinary=None
@@ -339,6 +342,9 @@ class data2doc():
 		return "".join(rez)
 	
 	def data2doc(self):
+		if self.docxTemplateBinary is None:
+			self.error="Template not found or not loaded"
+			return False
 		tableTags2clean=[]
 		memzip=BytesIO()
 		memzip.write(self.docxTemplateBinary)
