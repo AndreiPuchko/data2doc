@@ -82,6 +82,23 @@ def excelDataFormat(cellText, formatStr):
 	cellText=datetime.fromordinal(datetime(1900, 1, 1).toordinal() + int(N(cellText)) - 2).strftime(formatStr)
 	return cellText
 
+def merge(file1,file2,outputFile):
+	d2d=data2doc()
+	for x in [file1,file2]:
+		r=d2d.loadFile(x)
+		if not r:
+			print (f"Input file not found: {x}")
+			return False
+	if d2d.data2doc():
+		outputFile=d2d.checkOutputFileName(outputFile)
+		if d2d.saveFile(outputFile):
+			print (f"Processing finished. See result in {outputFile}")
+		else:
+			print (f"Can't create output file: {outputFile}")
+	else:
+		print (f"Processing error")
+
+
 class data2doc():
 
 	def __init__(self,dataDic={},docxTemplateBinary="",xlsxBinary="",jsonBinary=""):
@@ -106,10 +123,10 @@ class data2doc():
 		self.docxResultBinary=""
 
 	def loadFile(self,fileName):
-		{'.json':self.loadJsonFile,
-		'.docx':self.loadDocxFile,
-		'.xlsx':self.loadXlsxFile,
-		}.get(os.path.splitext(fileName)[1].lower(),lambda x:None)(fileName)
+		return {'.json':self.loadJsonFile,
+				'.docx':self.loadDocxFile,
+				'.xlsx':self.loadXlsxFile,
+				}.get(os.path.splitext(fileName)[1].lower(),lambda x:None)(fileName)
 	
 	# prepare excel data
 	def loadXlsxFile(self,fileIn):
@@ -490,7 +507,13 @@ class data2doc():
 		return startRow, columnNamesRow, endRow, filterRow, rowEval, columnNamesProxy
 	
 	# save resust to file
+	def checkOutputFileName(self,fileName=""):
+		if not fileName.lower().endswith(".docx"):
+			fileName+=".docx"
+		return fileName
+	
 	def saveFile(self,fileOut=""):
+		fileOut=self.checkOutputFileName(fileOut)
 		try:
 			open(fileOut,"wb").write(self.docxResultBinary)
 			return True
@@ -507,8 +530,16 @@ class data2doc():
 				}
 
 
-
 if __name__ == '__main__':
+	testSourceFolder=f"{os.path.dirname(__file__)}/../test-data/test01/"
+	testResultFolder=f"{os.path.dirname(__file__)}/../test-result"
+	
+	merge(f"{testSourceFolder}test.docx",
+		  f"{testSourceFolder}test.xlsx",
+		  f"{testResultFolder}/test-result"
+		)
+
+if __name__ == '__main__1':
 
 	testResultFolder=f"{os.path.dirname(__file__)}/../test-result/"
 	testSourceFolder=f"{os.path.dirname(__file__)}/../test-data/test*"
