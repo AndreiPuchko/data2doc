@@ -1,4 +1,6 @@
 /test-result/*.docx
-data2doc/__pycache__/*
+*/__pycache__/*
 venv*/*
 .gitignore
+_py.bat
+_pytest.bat

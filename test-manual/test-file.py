@@ -6,7 +6,7 @@ sys.path.insert(1, "../")
 
 from data2doc.data2doc import merge
 
-test_result_file_name = "test-result/test-result.docx"
+test_result_file_name = "test-data/test-result/test-result.docx"
 test_data_folder = "test-data/test01/"
 
 if not os.path.exists("test-data"):

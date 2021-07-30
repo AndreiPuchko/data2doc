@@ -7,7 +7,7 @@ sys.path.insert(1, "../")
 
 from data2doc.data2doc import data2doc
 
-testResultFolder = "test-result/"
+testResultFolder = "test-data/test-result/"
 testSourceFolder = "test-data/test*"
 
 if not os.path.exists("test-data"):
